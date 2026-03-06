@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
 
-    origin: 'http://localhost:5173', // Replace with your frontend URL
+    origin: 'https://job-portal-live-1-zoc3.onrender.com', // Replace with your frontend URL
 
     credentials: true
 }
