@@ -11,6 +11,7 @@ import Navbar from '../components/Navbar';
 
 gsap.registerPlugin(ScrollTrigger);
 
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const offerings = [
