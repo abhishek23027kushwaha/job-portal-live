@@ -10,6 +10,7 @@ import JobDetails from './pages/JobDetails'
 import EditProfile from './pages/EditProfile'
 import Profile from './pages/Profile'
 import MyAppliedJobs from './pages/MyAppliedJobs'
+import AboutUs from './pages/AboutUs'
 import Footer from './components/Footer'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -74,6 +75,7 @@ const App = () => {
               {/* User Routes */}
               <Route path='/' element={<Home/>} />
               <Route path='/jobs' element={<Jobs/>} />
+              <Route path='/about' element={<AboutUs/>} />
               <Route path='/description/:id' element={<JobDetails/>} />
               <Route path='/profile/edit' element={<AuthenticatedRoute><EditProfile/></AuthenticatedRoute>} />
               <Route path='/profile' element={<AuthenticatedRoute><Profile/></AuthenticatedRoute>} />

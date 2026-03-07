@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Briefcase, 
   Facebook, 
@@ -46,13 +47,12 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
           <div>
             <h3 className="text-white font-bold mb-6">Quick Links</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="hover:text-indigo-400 transition-colors">Find a Job</a></li>
-              <li><a href="#" className="hover:text-indigo-400 transition-colors">Post a Job</a></li>
-              <li><a href="#" className="hover:text-indigo-400 transition-colors">Companies</a></li>
+              <li><Link to="/jobs" className="hover:text-indigo-400 transition-colors">Find a Job</Link></li>
+              <li><Link to="/about" className="hover:text-indigo-400 transition-colors">About Us</Link></li>
+              <li><Link to="/" className="hover:text-indigo-400 transition-colors">Companies</Link></li>
               <li><a href="#" className="hover:text-indigo-400 transition-colors">Career Advice</a></li>
               <li><a href="#" className="hover:text-indigo-400 transition-colors">Pricing Plans</a></li>
             </ul>

@@ -1,15 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
-const Hero = () => {
+gsap.registerPlugin(ScrollTrigger);
+
+const MotivationalSection = () => {
   const sectionRef = useRef(null);
   const tagRef = useRef(null);
   const headingRef = useRef(null);
   const subRef = useRef(null);
   const btnRef = useRef(null);
-  const statsRef = useRef(null);
   const particle1 = useRef(null);
   const particle2 = useRef(null);
   const particle3 = useRef(null);
@@ -31,28 +33,30 @@ const Hero = () => {
         duration: 4, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1,
       });
 
-      // Entrance animations (page load pe — no ScrollTrigger needed for Hero)
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      // ScrollTrigger entrance animations
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
 
       tl.fromTo(tagRef.current,
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6 }
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }
       )
       .fromTo(headingRef.current,
         { opacity: 0, y: 40, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8 }, '-=0.3'
+        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, '-=0.3'
       )
       .fromTo(subRef.current,
         { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 0.6 }, '-=0.4'
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4'
       )
       .fromTo(btnRef.current,
         { opacity: 0, y: 20, scale: 0.9 },
         { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.5)' }, '-=0.3'
-      )
-      .fromTo(statsRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 }, '-=0.2'
       );
     }, sectionRef);
 
@@ -62,7 +66,7 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden py-28 px-4 md:py-36"
+      className="relative overflow-hidden py-24 px-4"
     >
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-700 via-violet-700 to-purple-800" />
@@ -70,20 +74,19 @@ const Hero = () => {
       {/* Radial glow spots */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl" />
 
       {/* Floating Particles */}
-      <div ref={particle1} className="absolute top-10 left-10 md:left-24 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-2xl shadow-xl select-none">
+      <div ref={particle1} className="absolute top-10 left-10 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-2xl shadow-xl">
         💼
       </div>
-      {/* <div ref={particle2} className="absolute bottom-12 right-10 md:right-24 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-2xl shadow-xl select-none">
-      
-      </div> */}
-      {/* <div ref={particle3} className="absolute top-16 right-10 md:right-40 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-2xl shadow-xl select-none">
-     
-      </div> */}
+      <div ref={particle2} className="absolute bottom-12 right-16 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-2xl shadow-xl">
+        🚀
+      </div>
+      <div ref={particle3} className="absolute top-16 right-12 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-2xl shadow-xl">
+        ✨
+      </div>
 
-      {/* Decorative dot grid */}
+      {/* Decorative grid */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -104,12 +107,12 @@ const Hero = () => {
         </div>
 
         {/* Main Heading */}
-        <h1 ref={headingRef} className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-5 drop-shadow-lg">
+        <h2 ref={headingRef} className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-5 drop-shadow-lg">
           Your Career Journey
           <span className="block bg-gradient-to-r from-yellow-300 via-pink-300 to-cyan-300 bg-clip-text text-transparent">
             Starts Here.
           </span>
-        </h1>
+        </h2>
 
         {/* Subtext */}
         <p ref={subRef} className="text-lg md:text-xl text-indigo-200 max-w-xl mx-auto mb-10 leading-relaxed">
@@ -128,7 +131,7 @@ const Hero = () => {
         </div>
 
         {/* Stats row */}
-        <div ref={statsRef} className="mt-14 flex flex-wrap justify-center gap-10">
+        <div className="mt-12 flex flex-wrap justify-center gap-8">
           {[
             { value: '10K+', label: 'Jobs Listed' },
             { value: '500+', label: 'Companies' },
@@ -145,4 +148,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default MotivationalSection;

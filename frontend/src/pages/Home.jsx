@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import Hero from './Hero'
 import LatestJobs from './LatestJob'
+import FeaturesSection from '../components/FeaturesSection'
 import useGetAllJobs from '../hooks/useGetAllJobs';
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
     <div>
       <Navbar/>
       <Hero/>
+      <FeaturesSection/>
       <LatestJobs/>
     </div>
   )
