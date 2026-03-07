@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Briefcase, ArrowRight, Loader2, User } from 'lucide-react';
+import { Mail, Lock, Briefcase, ArrowRight, Loader2, User, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { API_URL } from '../App';
@@ -20,6 +20,7 @@ const Login = () => {
         password: '',
         role: 'student' // Default value
     });
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -171,11 +172,18 @@ const Login = () => {
                             <div className="relative group">
                                 <Lock className="absolute left-4 top-3.5 w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                                 <input 
-                                    type="password" name="password" value={formData.password} onChange={handleChange}
+                                    type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange}
                                     placeholder="••••••••"
-                                    className="w-full pl-12 pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium"
+                                    className="w-full pl-12 pr-12 py-3 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium"
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-3.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
                             </div>
                         </motion.div>
 

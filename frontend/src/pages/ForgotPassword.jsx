@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, KeyRound, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Mail, Lock, KeyRound, ArrowRight, ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { API_URL } from '../App';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -8,32 +11,67 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '']); 
   const [passwords, setPasswords] = useState({ new: '', confirm: '' });
+  const [loading, setLoading] = useState(false);
 
-  // Mock functions to simulate API calls
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    console.log("Sending OTP to:", email);
-    setStep(2);
+    try {
+        setLoading(true);
+        const res = await axios.post(`${API_URL}/api/v1/user/forgot-password`, { email });
+        if (res.data.success) {
+            toast.success(res.data.message);
+            setStep(2);
+        }
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to send OTP");
+    } finally {
+        setLoading(false);
+    }
   };
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const otpValue = otp.join('');
-    console.log("Verifying OTP:", otpValue);
-    if (otpValue.length === 4) {
-        setStep(3);
+    if (otpValue.length !== 4) {
+        toast.error("Please enter 4-digit OTP");
+        return;
+    }
+    try {
+        setLoading(true);
+        const res = await axios.post(`${API_URL}/api/v1/user/verify-otp`, { email, otp: otpValue });
+        if (res.data.success) {
+            toast.success(res.data.message);
+            setStep(3);
+        }
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Invalid OTP");
+    } finally {
+        setLoading(false);
     }
   };
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     if (passwords.new !== passwords.confirm) {
-        alert("Passwords do not match!");
+        toast.error("Passwords do not match!");
         return;
     }
-    console.log("Resetting password for:", email);
-    // Redirect to login after success
-    navigate('/login');
+    try {
+        setLoading(true);
+        const res = await axios.post(`${API_URL}/api/v1/user/reset-password`, { 
+            email, 
+            otp: otp.join(''), 
+            password: passwords.new 
+        });
+        if (res.data.success) {
+            toast.success(res.data.message);
+            navigate('/login');
+        }
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to reset password");
+    } finally {
+        setLoading(false);
+    }
   };
 
   const handleOtpChange = (index, value) => {
@@ -107,9 +145,10 @@ const ForgotPassword = () => {
                     </div>
                     <button 
                         type="submit" 
-                        className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                        disabled={loading}
+                        className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-70"
                     >
-                        Send OTP <ArrowRight className="w-5 h-5" />
+                        {loading ? <Loader2 className="animate-spin" /> : <>Send OTP <ArrowRight className="w-5 h-5" /></>}
                     </button>
                     <div className="text-center">
                         <Link to="/login" className="text-slate-500 text-sm font-medium hover:text-indigo-600 hover:underline">
@@ -137,9 +176,10 @@ const ForgotPassword = () => {
                     </div>
                     <button 
                         type="submit" 
-                        className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                        disabled={loading}
+                        className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-70"
                     >
-                        Verify OTP <CheckCircle2 className="w-5 h-5" />
+                        {loading ? <Loader2 className="animate-spin" /> : <>Verify OTP <CheckCircle2 className="w-5 h-5" /></>}
                     </button>
                     <div className="text-center">
                          <button type="button" onClick={() => setStep(1)} className="text-slate-500 text-sm font-medium hover:text-indigo-600 hover:underline">
@@ -184,9 +224,10 @@ const ForgotPassword = () => {
 
                     <button 
                         type="submit" 
-                        className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                        disabled={loading}
+                        className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-70"
                     >
-                         Reset Password <ArrowRight className="w-5 h-5" />
+                        {loading ? <Loader2 className="animate-spin" /> : <>Reset Password <ArrowRight className="w-5 h-5" /></>}
                     </button>
                 </form>
             )}

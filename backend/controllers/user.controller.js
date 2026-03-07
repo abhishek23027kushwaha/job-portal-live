@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../config/token.js";
 import cloudinary from "../utils/cloudinary.js";
 import getDataUri from "../utils/dataUri.js";
+import sendEmail from "../utils/sendEmail.js";
 export const register = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
@@ -266,3 +267,130 @@ export const updateProfile = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 }
+
+
+// =============================================
+// FORGOT PASSWORD - OTP SEND
+// =============================================
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ message: "Email is required", success: false });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "No account found with this email", success: false });
+        }
+
+        // 4-digit OTP generate karo
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+
+        // OTP ko hash karke save karo (security ke liye)
+        const hashedOtp = await bcrypt.hash(otp, 10);
+        user.resetOtp = hashedOtp;
+        user.resetOtpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+        await user.save({ validateModifiedOnly: true });
+
+        // Email bhejo
+        await sendEmail({
+            email: user.email,
+            subject: "Your Password Reset OTP - Job Portal",
+            message: `Hello ${user.name},\n\nYour OTP to reset your password is: ${otp}\n\nThis OTP is valid for 10 minutes. Do not share it with anyone.\n\nIf you did not request this, please ignore this email.\n\nRegards,\nJob Portal Team`
+        });
+
+        return res.status(200).json({
+            message: "OTP sent to your email address",
+            success: true
+        });
+
+    } catch (error) {
+        console.error("❌ forgotPassword error:", error.message);
+        return res.status(500).json({ message: error.message || "Internal server error", success: false });
+    }
+};
+
+// =============================================
+// VERIFY OTP
+// =============================================
+export const verifyOtp = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+            return res.status(400).json({ message: "Email and OTP are required", success: false });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user || !user.resetOtp || !user.resetOtpExpires) {
+            return res.status(400).json({ message: "OTP not found. Please request a new one", success: false });
+        }
+
+        // Expiry check
+        if (user.resetOtpExpires < new Date()) {
+            return res.status(400).json({ message: "OTP has expired. Please request a new one", success: false });
+        }
+
+        // OTP match karo
+        const isOtpValid = await bcrypt.compare(otp, user.resetOtp);
+        if (!isOtpValid) {
+            return res.status(400).json({ message: "Invalid OTP. Please try again", success: false });
+        }
+
+        return res.status(200).json({
+            message: "OTP verified successfully",
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error", success: false });
+    }
+};
+
+// =============================================
+// RESET PASSWORD
+// =============================================
+export const resetPassword = async (req, res) => {
+    try {
+        const { email, otp, password } = req.body;
+
+        if (!email || !otp || !password) {
+            return res.status(400).json({ message: "All fields are required", success: false });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user || !user.resetOtp || !user.resetOtpExpires) {
+            return res.status(400).json({ message: "OTP not found. Please request a new one", success: false });
+        }
+
+        // Expiry check
+        if (user.resetOtpExpires < new Date()) {
+            return res.status(400).json({ message: "OTP has expired. Please request a new one", success: false });
+        }
+
+        // OTP verify karo
+        const isOtpValid = await bcrypt.compare(otp, user.resetOtp);
+        if (!isOtpValid) {
+            return res.status(400).json({ message: "Invalid OTP", success: false });
+        }
+
+        // Naya password hash karo aur save karo
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        user.resetOtp = undefined;
+        user.resetOtpExpires = undefined;
+        await user.save({ validateModifiedOnly: true });
+
+        return res.status(200).json({
+            message: "Password reset successfully! Please login with your new password",
+            success: true
+        });
+
+    } catch (error) {
+        console.error("❌ resetPassword error:", error.message);
+        return res.status(500).json({ message: error.message || "Internal server error", success: false });
+    }
+};

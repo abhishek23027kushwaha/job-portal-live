@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, logout, googleLogin, updateProfile, getProfile } from "../controllers/user.controller.js";
+import { register, login, logout, googleLogin, updateProfile, getProfile, forgotPassword, verifyOtp, resetPassword } from "../controllers/user.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import { singleUpload } from "../middlewares/multer.js";
  
@@ -11,6 +11,9 @@ router.route("/logout").get(logout);
 router.route("/google").post(googleLogin);
 router.route("/profile/update").post(isAuthenticated, singleUpload, updateProfile);
 router.route("/profile/view").get(isAuthenticated, getProfile);
+router.route("/forgot-password").post(forgotPassword);
+router.route("/verify-otp").post(verifyOtp);
+router.route("/reset-password").post(resetPassword);
 
 export default router;
 

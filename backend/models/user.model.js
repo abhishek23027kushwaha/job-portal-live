@@ -48,6 +48,12 @@ const userSchema = new mongoose.Schema(
     profilePhoto: {
         type: String,
         default: ""
+    },
+    resetOtp: {
+        type: String,
+    },
+    resetOtpExpires: {
+        type: Date,
     }
   },
   { timestamps: true }
