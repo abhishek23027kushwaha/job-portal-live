@@ -207,13 +207,14 @@ const AboutUs = () => {
           start: 'top 80%',
           once: true,
           onEnter: () => {
-            gsap.from({ val: 0 }, {
+            const counter = { val: 0 };
+            gsap.to(counter, {
               val: numericValue,
               duration: 2,
               ease: 'power2.out',
               delay: i * 0.15,
               onUpdate: function () {
-                el.textContent = Math.floor(this.targets()[0].val) + suffix;
+                el.textContent = Math.floor(counter.val) + suffix;
               },
             });
           },
