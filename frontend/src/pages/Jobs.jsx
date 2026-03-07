@@ -48,18 +48,19 @@ const Jobs = () => {
   useGetAllJobs();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { allJobs, searchJobByText, filterRole, filterSalary, loading } = useSelector(store => store.job);
-  const [filterJobs, setFilterJobs] = useState(allJobs);
- 
-  useEffect(() => {
+  const filterJobs = React.useMemo(() => {
     let filtered = allJobs;
 
     // 1. Filter by Search Text
     if (searchJobByText) {
+      const lowerSearch = searchJobByText.toLowerCase();
       filtered = filtered.filter((job) => {
-        return job.title?.toLowerCase().includes(searchJobByText.toLowerCase()) ||
-               job.company?.name?.toLowerCase().includes(searchJobByText.toLowerCase()) || 
-               job.description?.toLowerCase().includes(searchJobByText.toLowerCase()) ||
-               job.location?.toLowerCase().includes(searchJobByText.toLowerCase());
+        return (
+          job.title?.toLowerCase().includes(lowerSearch) ||
+          job.company?.name?.toLowerCase().includes(lowerSearch) ||
+          job.description?.toLowerCase().includes(lowerSearch) ||
+          job.location?.toLowerCase().includes(lowerSearch)
+        );
       });
     }
 
@@ -83,7 +84,7 @@ const Jobs = () => {
       });
     }
 
-    setFilterJobs(filtered);
+    return filtered;
   }, [allJobs, searchJobByText, filterRole, filterSalary]);
 
   return (

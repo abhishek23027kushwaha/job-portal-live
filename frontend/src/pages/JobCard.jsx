@@ -3,7 +3,7 @@ import { MapPin, Briefcase, IndianRupee, Clock, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-const JobCard = ({ job }) => {
+const JobCard = React.memo(({ job }) => {
   const navigate = useNavigate();
   return (
     <motion.div 
@@ -92,6 +92,6 @@ const JobCard = ({ job }) => {
       </div>
     </motion.div>
   );
-};
+});
 
 export default JobCard;

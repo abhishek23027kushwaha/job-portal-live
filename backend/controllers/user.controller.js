@@ -135,7 +135,7 @@ export const logout = async (req, res) => {
 export const googleLogin = async (req, res) => {
   try {
     const { name, email, photoUrl, role } = req.body;
-    
+    console.log(name);
     let user = await User.findOne({ email });
 
     if (!user) {

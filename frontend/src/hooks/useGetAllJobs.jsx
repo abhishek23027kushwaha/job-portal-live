@@ -11,12 +11,13 @@ const useGetAllJobs = () => {
         const fetchAllJobs = async () => {
             dispatch(setLoading(true));
             try {
-                const res = await axios.get(`${API_URL}/api/v1/job/get?keyword=${searchJobByText}`, { withCredentials: true });
+                // Fetch more jobs at once for a smoother experience, or use pagination
+                const res = await axios.get(`${API_URL}/api/v1/job/get?keyword=${searchJobByText}&limit=100`, { withCredentials: true });
                 if (res.data.success) {
                     dispatch(setAllJobs(res.data.jobs));
                 }
             } catch (error) {
-                console.log(error);
+                console.error("Error fetching jobs:", error);
             } finally {
                 dispatch(setLoading(false));
             }
