@@ -2,14 +2,19 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth"; // 1. Auth imports add kiye
 
+// Import the functions you need from the SDKs you need
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDqAF4YiTv70W5h87oOrN5reuEObgoI-a0",
-  authDomain: "job-portal-e20a0.firebaseapp.com",
-  projectId: "job-portal-e20a0",
-  storageBucket: "job-portal-e20a0.firebasestorage.app",
-  messagingSenderId: "568582233649",
-  appId: "1:568582233649:web:3466ace50a214c72873f10"
+  apiKey: "AIzaSyD4bTJKvb6BklH0poSLCxwJC92BUzAxl14",
+  authDomain: "job-portal-live-7d5a6.firebaseapp.com",
+  projectId: "job-portal-live-7d5a6",
+  storageBucket: "job-portal-live-7d5a6.firebasestorage.app",
+  messagingSenderId: "146784206805",
+  appId: "1:146784206805:web:9e2e15ccf3a56e8561075c"
 };
 
 // Initialize Firebase
@@ -20,3 +25,5 @@ export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
 export default app;
+
+

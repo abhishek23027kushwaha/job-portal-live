@@ -115,49 +115,66 @@ const Navbar = () => {
               </button>
             )}
 
-            {/* User Profile Dropdown */}
+            {/* User Profile Dropdown or Login/Signup Buttons */}
             {!isSearchOpen && (
-              <div className="relative">
-                <button
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  {user?.name[0].toUpperCase()|| "A"}
-                </button>
+              user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    {user?.name?.[0].toUpperCase() || "A"}
+                  </button>
 
-                {isOpen && (
-                  <>
-                    <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-20 animate-in fade-in zoom-in duration-200">
-                      <div className="px-4 py-2 border-b border-slate-100">
-                        <p className="text-xs text-slate-500">Signed in as</p>
-                        <p className="text-sm font-medium text-slate-900 truncate">{user?.email}</p>
+                  {isOpen && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
+                      <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-20 animate-in fade-in zoom-in duration-200">
+                        <div className="px-4 py-2 border-b border-slate-100">
+                          <p className="text-xs text-slate-500">Signed in as</p>
+                          <p className="text-sm font-medium text-slate-900 truncate">{user?.email}</p>
+                        </div>
+                        
+                        <button onClick={() => { setIsOpen(false); navigate('/profile'); }} className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2 font-medium">
+                          <User className="w-4 h-4" /> My Profile
+                        </button>
+                        
+                        <button onClick={() => { setIsOpen(false); navigate('/my-applied-jobs'); }} className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2">
+                          <Briefcase className="w-4 h-4" /> My Applied Jobs
+                        </button>
+                        
+                        <button className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2">
+                          <Settings className="w-4 h-4" /> Settings
+                        </button>
+                        
+                        <div className="border-t border-slate-100 my-1"></div>
+                        
+                        <button 
+                          onClick={handleLogout} 
+                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 gap-2 transition-colors font-semibold"
+                        >
+                          <LogOut className="w-4 h-4" /> Sign Out
+                        </button>
                       </div>
-                      
-                      <button onClick={() => { setIsOpen(false); navigate('/profile'); }} className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2 font-medium">
-                        <User className="w-4 h-4" /> My Profile
-                      </button>
-                      
-                      <button onClick={() => { setIsOpen(false); navigate('/my-applied-jobs'); }} className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2">
-                        <Briefcase className="w-4 h-4" /> My Applied Jobs
-                      </button>
-                      
-                      <button className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2">
-                        <Settings className="w-4 h-4" /> Settings
-                      </button>
-                      
-                      <div className="border-t border-slate-100 my-1"></div>
-                      
-                      <button 
-                        onClick={handleLogout} 
-                        className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 gap-2 transition-colors font-semibold"
-                      >
-                        <LogOut className="w-4 h-4" /> Sign Out
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => navigate('/login')}
+                    className="px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors border border-indigo-600"
+                  >
+                    Login
+                  </button>
+                  <button 
+                    onClick={() => navigate('/signup')}
+                    className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-all shadow-sm shadow-indigo-200"
+                  >
+                    Signup
+                  </button>
+                </div>
+              )
             )}
           </div>
         </div>

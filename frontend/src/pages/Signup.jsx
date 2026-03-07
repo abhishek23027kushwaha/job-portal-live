@@ -8,6 +8,7 @@ import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../../firebase';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
+import { motion } from 'framer-motion';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const Signup = () => {
         }
       }
     } catch (error) {
-      console.error(error);
+      console.error("Firebase Auth Error:", error.code, error.message);
       toast.error(error.message || "Google Sign-in failed");
     } finally {
       setLoading(false);
@@ -93,15 +94,33 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 py-10">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+    <div className="min-h-screen relative flex items-center justify-center p-4 py-10 overflow-hidden">
+      {/* Premium Background */}
+      <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-slate-50"></div>
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 max-w-md w-full bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+      >
         
         {/* Header */}
         <div className="bg-indigo-600 p-8 text-center relative overflow-hidden">
-          <div className="relative z-10">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="relative z-10"
+          >
             <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Create Account</h2>
             <p className="text-indigo-100 text-sm font-medium">Join us to find jobs or hire top talent</p>
-          </div>
+          </motion.div>
           <div className="absolute top-[-50%] left-[-20%] w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
         </div>
 
@@ -109,7 +128,12 @@ const Signup = () => {
         <div className="p-8">
           
           {/* Role Selection Tabs */}
-          <div className="flex gap-3 mb-8 p-1 bg-slate-100 rounded-2xl">
+          <motion.div 
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex gap-3 mb-8 p-1 bg-slate-100 rounded-2xl"
+          >
             <button 
               type="button"
               onClick={() => handleRoleChange('student')}
@@ -124,52 +148,82 @@ const Signup = () => {
             >
               <Briefcase size={18} /> Recruiter
             </button>
-          </div>
+          </motion.div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             
-            <div className="space-y-1.5">
+            <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="space-y-1.5"
+            >
               <label className="text-xs font-bold text-slate-600 ml-1">Full Name</label>
               <div className="relative group">
                 <User className="absolute left-4 top-3.5 w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-                <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium text-slate-700" required />
+                <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" className="w-full pl-12 pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium text-slate-700" required />
               </div>
-            </div>
+            </motion.div>
 
-            <div className="space-y-1.5">
+            <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="space-y-1.5"
+            >
               <label className="text-xs font-bold text-slate-600 ml-1">Email Address</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-3.5 w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium text-slate-700" required />
+                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" className="w-full pl-12 pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium text-slate-700" required />
               </div>
-            </div>
+            </motion.div>
 
-            <div className="space-y-1.5">
+            <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="space-y-1.5"
+            >
               <label className="text-xs font-bold text-slate-600 ml-1">Password</label>
               <div className="relative group">
                 <Lock className="absolute left-4 top-3.5 w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-                <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium text-slate-700" required />
+                <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" className="w-full pl-12 pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-medium text-slate-700" required />
               </div>
-            </div>
+            </motion.div>
 
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.7 }}
               type="submit" 
               disabled={loading}
-              className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-70 mt-2"
+              className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-xl disabled:opacity-70 mt-2"
             >
               {loading ? <Loader2 className='animate-spin w-5 h-5' /> : <>Create {formData.role === 'recruiter' ? 'Admin' : 'Student'} Account <ArrowRight className="w-5 h-5" /></>}
-            </button>
+            </motion.button>
             
-            <div className="relative my-6">
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="relative my-6"
+            >
                 <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-slate-200"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase tracking-widest font-bold">
-                    <span className="px-2 bg-white text-slate-400">Or continue with</span>
+                    <span className="px-2 bg-white/0 text-slate-400">Or continue with</span>
                 </div>
-            </div>
+            </motion.div>
 
-            <button 
+            <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.9 }}
                 type="button"
                 onClick={handleGoogleSignup}
                 disabled={loading}
@@ -182,19 +236,24 @@ const Signup = () => {
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
                 Sign up with Google
-            </button>
+            </motion.button>
           </form>
 
-          <div className="mt-8 text-center">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.0 }}
+            className="mt-8 text-center"
+          >
             <p className="text-slate-500 text-sm font-medium">
               Already have an account?{' '}
               <Link to="/login" className="text-indigo-600 font-bold hover:underline">
                 Log In
               </Link>
             </p>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
