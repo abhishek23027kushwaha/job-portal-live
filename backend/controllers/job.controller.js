@@ -65,19 +65,13 @@ export const getAllJobs = async (req, res) => {
 
         const totalJobs = await Job.countDocuments(query);
 
-        if (!jobs || jobs.length === 0) {
-            return res.status(404).json({
-                message: "No jobs found.",
-                success: false
-            });
-        }
-
         return res.status(200).json({
-            jobs,
+            jobs: jobs || [],
             totalJobs,
             totalPages: Math.ceil(totalJobs / limit),
             currentPage: page,
-            success: true
+            success: true,
+            message: jobs.length === 0 ? "No jobs found." : "Jobs fetched successfully."
         });
     } catch (error) {
         console.error("Error in getAllJobs:", error);

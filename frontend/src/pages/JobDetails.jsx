@@ -23,6 +23,11 @@ const JobDetails = () => {
   const dispatch = useDispatch();
   useGetSingleJob(id);
 
+  // Page ko top se open karo
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   const { singleJob } = useSelector(store => store.job);
   const { user } = useSelector(store => store.user);
   const navigate = useNavigate();

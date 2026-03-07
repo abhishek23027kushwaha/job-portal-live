@@ -22,6 +22,11 @@ app.use(cors(corsOptions));
 const PORT = process.env.PORT || 3000;
 
 connectDB();
+// Health check endpoint (Render ke liye - backend alive rakhe)
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok", message: "Backend is running!" });
+});
+
 // api's
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/job", jobRoute);
