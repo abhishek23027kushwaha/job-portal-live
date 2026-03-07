@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-    origin: ['http://localhost:5173', 'https://job-portal-live-tc14.onrender.com', 'https://job-portal-live-1-zoc3.onrender.com'], 
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://job-portal-live-tc14.onrender.com', 'https://job-portal-live-1-zoc3.onrender.com'], 
     credentials: true
 }
 app.use(cors(corsOptions));

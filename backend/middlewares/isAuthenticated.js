@@ -4,12 +4,13 @@ const isAuthenticated = async (req, res, next) => {
     try {
         const token = req.cookies.token;
         if (!token) {
-            console.log("No token found in cookies");
+            console.log("No token found in cookies. All cookies:", req.cookies);
             return res.status(401).json({
                 message: "User not authenticated",
                 success: false,
             });
         }
+        console.log("Token received, length:", token.length);
         const decode = await jwt.verify(token, process.env.JWT_SECRET);
         if(!decode){
             return res.status(401).json({

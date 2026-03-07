@@ -28,7 +28,7 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
 import PublicRoute from './components/PublicRoute'
 
-export const API_URL = window.location.hostname === 'localhost' 
+export const API_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
   ? 'http://localhost:5000' 
   : 'https://job-portal-live-tc14.onrender.com';
 
