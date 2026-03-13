@@ -31,7 +31,7 @@ import PublicRoute from './components/PublicRoute'
 
 export const API_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
   ? 'http://localhost:5000' 
-  : 'https://job-portal-live-tc14.onrender.com';
+  : 'https://job-portal-live-2-pojy.onrender.com';
 
 const App = () => {
   const location = useLocation();
