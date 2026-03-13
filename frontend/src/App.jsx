@@ -62,7 +62,7 @@ const App = () => {
     <div className="flex flex-col min-h-screen">
       <Toaster />
       
-      <div className="flex-grow overflow-hidden">
+      <div className="flex-grow">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}

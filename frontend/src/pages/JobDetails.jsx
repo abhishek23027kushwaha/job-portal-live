@@ -17,6 +17,7 @@ import axios from 'axios';
 import { API_URL } from '../App';
 import useGetSingleJob from '../hooks/useGetSingleJob';
 import { setSingleJob } from '../redux/jobSlice';
+import SkeletonJobDetails from '../components/SkeletonJobDetails';
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -28,13 +29,19 @@ const JobDetails = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  const { singleJob } = useSelector(store => store.job);
+  const { singleJob, loading } = useSelector(store => store.job);
   const { user } = useSelector(store => store.user);
   const navigate = useNavigate();
 
   const isApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
 
   const applyJobHandler = async () => {
+    if (!user) {
+      toast.error("Please login to apply for this job");
+      navigate("/login");
+      return;
+    }
+
     try {
       const res = await axios.get(`${API_URL}/api/v1/application/apply/${id}`, { withCredentials: true });
 
@@ -59,7 +66,8 @@ const JobDetails = () => {
     }
   }
 
-  if (!singleJob) return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+  if (loading) return <SkeletonJobDetails />;
+  if (!singleJob) return <div className="flex items-center justify-center min-h-screen text-slate-500 font-medium">Job not found</div>
 
   return (
     <div className="bg-slate-50 min-h-screen pb-10">

@@ -2,9 +2,10 @@ import React from 'react';
 import JobCard from './JobCard';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import SkeletonJobCard from '../components/SkeletonJobCard';
 
 const LatestJobs = () => {
-  const { allJobs } = useSelector(store => store.job);
+  const { allJobs, loading } = useSelector(store => store.job);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -40,9 +41,13 @@ const LatestJobs = () => {
         viewport={{ once: true }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        {allJobs?.length > 0 ? allJobs.slice(0, 6).map((job) => (
-          <JobCard key={job._id} job={job} />
-        )) : (
+        {loading ? (
+          [1, 2, 3, 4, 5, 6].map(i => <SkeletonJobCard key={i} />)
+        ) : allJobs?.length > 0 ? (
+          allJobs.slice(0, 6).map((job) => (
+            <JobCard key={job._id} job={job} />
+          ))
+        ) : (
           <div className="col-span-full text-center py-12">
             <p className="text-slate-500">No jobs found</p>
           </div>

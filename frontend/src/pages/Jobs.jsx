@@ -5,44 +5,8 @@ import { SlidersHorizontal } from 'lucide-react';
 import useGetAllJobs from '../hooks/useGetAllJobs';
 import FilterSidebar from '../components/FilterSidebar';
 import JobCard from './JobCard';
+import SkeletonJobCard from '../components/SkeletonJobCard';
 
-const SkeletonJobCard = () => (
-  <div className="max-w-md w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden">
-    <div className="flex justify-between items-start mb-4">
-      <div className="space-y-3 w-2/3">
-        <motion.div 
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="h-6 bg-slate-200 rounded-lg w-full"
-        />
-        <motion.div 
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
-          className="h-4 bg-slate-100 rounded-lg w-1/2"
-        />
-      </div>
-      <motion.div 
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
-        className="w-14 h-14 bg-slate-100 rounded-lg"
-      />
-    </div>
-    <div className="space-y-3 mb-6">
-      {[1, 2, 3].map(i => (
-        <motion.div 
-          key={i}
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 * i }}
-          className="h-4 bg-slate-50 rounded-lg w-full"
-        />
-      ))}
-    </div>
-    <div className="flex gap-2">
-      <div className="h-6 bg-slate-100 rounded-full w-20" />
-      <div className="h-6 bg-slate-100 rounded-full w-24" />
-    </div>
-  </div>
-);
 
 const Jobs = () => {
   useGetAllJobs();
@@ -91,9 +55,16 @@ const Jobs = () => {
     <div className="bg-slate-50/30 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8">
         
+        {/* BREADCRUMB / BACK LINK */}
+        <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">
+          <button onClick={() => window.history.back()} className="hover:text-indigo-600 transition-colors">Home</button>
+          <span>/</span>
+          <span className="text-slate-900">Explore Jobs</span>
+        </div>
+
         {/* MOBILE FILTER LOGO/BUTTON */}
-        <div className="flex md:hidden items-center justify-between mb-6 bg-white p-4 rounded-2xl border border-slate-200">
-          <h2 className="font-bold text-slate-900">Browse Jobs</h2>
+        <div className="flex md:hidden items-center justify-between mb-6 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <h2 className="font-extrabold text-slate-900">Browse Jobs</h2>
           
           <button 
             onClick={() => setIsFilterOpen(true)}
@@ -104,20 +75,25 @@ const Jobs = () => {
           </button>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-8 items-start">
           
-          <div className="md:w-1/4">
+          <div className="md:w-1/4 w-full md:sticky md:top-24">
             <FilterSidebar
               isOpen={isFilterOpen} 
               onClose={() => setIsFilterOpen(false)} 
             />
           </div>
 
-          <div className="flex-1">
-            <div className="hidden md:flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-slate-900">
-                   {loading ? "Searching Jobs..." : `Recommended Jobs (${filterJobs?.length})`}
-                </h2>
+          <div className="flex-1 w-full">
+            <div className="hidden md:flex justify-between items-center mb-8">
+                <div>
+                  <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                     Recommended <span className="text-indigo-600">Jobs</span>
+                  </h2>
+                  <p className="text-slate-500 text-sm mt-1 font-medium">
+                    {loading ? "Searching for the best matches..." : `${filterJobs?.length} positions found for you`}
+                  </p>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
