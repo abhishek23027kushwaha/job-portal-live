@@ -14,8 +14,24 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://job-portal-live-tc14.onrender.com', 'https://job-portal-live-1-zoc3.onrender.com'], 
-    credentials: true
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'http://localhost:5173', 
+            'http://127.0.0.1:5173', 
+            'https://job-portal-live-tc14.onrender.com', 
+            'https://job-portal-live-1-zoc3.onrender.com',
+            'https://job-portal-live-2-pojy.onrender.com'
+        ];
+        // Allow requests with no origin (like mobile apps or curl) or matching allowedOrigins or ending with .onrender.com
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }
 app.use(cors(corsOptions));
 
