@@ -144,16 +144,16 @@ export const applyJob = async (req, res) => {
 </html>
             `;
 
-            // Send email (awaiting ensure the request completes on cloud environments)
+            // Send email asynchronously (removed await)
             try {
-                await sendEmail({
+                sendEmail({
                     email: applicant.email,
                     subject: `✅ Application Confirmed: ${jobTitle} at ${companyName}`,
                     message: `Hi ${applicantName}, your application for ${jobTitle} at ${companyName} has been submitted successfully!`,
                     html: htmlContent
-                });
+                }).catch(err => console.error("⚠️ Failed to send application confirmation email (async):", err.message));
             } catch (err) {
-                console.error("⚠️ Failed to send application confirmation email:", err.message);
+                console.error("⚠️ Failed to initiate email send:", err.message);
             }
         }
 

@@ -27,6 +27,7 @@ const JobDetails = () => {
 
   // Modal State
   const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
+  const [loadingApply, setLoadingApply] = React.useState(false);
 
   // Page ko top se open karo
   React.useEffect(() => {
@@ -76,6 +77,7 @@ const JobDetails = () => {
     }
 
     try {
+      setLoadingApply(true);
       const res = await axios.get(`${API_URL}/api/v1/application/apply/${id}`, { withCredentials: true });
 
       if (res.data.success) {
@@ -95,7 +97,9 @@ const JobDetails = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoadingApply(false);
     }
   }
 
@@ -173,11 +177,18 @@ const JobDetails = () => {
             {/* Right Section: Action Button */}
             <div className="w-full md:w-auto">
               <button 
-                onClick={isApplied ? null : applyJobHandler}
-                disabled={isApplied}
-                className={`w-full md:w-auto font-bold px-8 py-3 rounded-xl transition-all shadow-lg ${isApplied ? 'bg-slate-400 cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.98] shadow-indigo-100'}`}
+                onClick={isApplied || loadingApply ? null : applyJobHandler}
+                disabled={isApplied || loadingApply}
+                className={`w-full md:w-auto font-bold px-8 py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 ${isApplied ? 'bg-slate-400 cursor-not-allowed text-white' : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.98] shadow-indigo-100'}`}
               >
-                {isApplied ? "Applied" : "Apply Now"}
+                {loadingApply ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Applying...
+                  </>
+                ) : (
+                  isApplied ? "Applied" : "Apply Now"
+                )}
               </button>
             </div>
           </div>
