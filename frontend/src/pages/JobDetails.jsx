@@ -18,11 +18,15 @@ import { API_URL } from '../App';
 import useGetSingleJob from '../hooks/useGetSingleJob';
 import { setSingleJob } from '../redux/jobSlice';
 import SkeletonJobDetails from '../components/SkeletonJobDetails';
+import ShareModal from '../components/ShareModal';
 
 const JobDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   useGetSingleJob(id);
+
+  // Modal State
+  const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
 
   // Page ko top se open karo
   React.useEffect(() => {
@@ -72,6 +76,14 @@ const JobDetails = () => {
   return (
     <div className="bg-slate-50 min-h-screen pb-10">
       
+      {/* Share Modal */}
+      <ShareModal 
+        isOpen={isShareModalOpen} 
+        onClose={() => setIsShareModalOpen(false)} 
+        jobTitle={singleJob?.title}
+        url={window.location.href}
+      />
+
       {/* Header / Nav */}
       <div className="bg-white sticky top-0 z-10 border-b border-slate-200 px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -83,7 +95,10 @@ const JobDetails = () => {
           </button>
           <span className="font-semibold text-slate-900">Job Details</span>
           <div className="flex gap-2">
-            <button className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
+            <button 
+              onClick={() => setIsShareModalOpen(true)}
+              className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors"
+            >
               <Share2 className="w-5 h-5" />
             </button>
             <button className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
