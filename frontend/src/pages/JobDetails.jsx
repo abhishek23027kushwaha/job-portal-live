@@ -38,6 +38,35 @@ const JobDetails = () => {
   const navigate = useNavigate();
 
   const isApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+  const isSaved = user?.savedJobs?.some(savedJob => (savedJob._id || savedJob) === id) || false;
+
+  const saveJobHandler = async () => {
+    if (!user) {
+      toast.error("Please login to save this job");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const res = await axios.get(`${API_URL}/api/v1/user/save/${id}`, { withCredentials: true });
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        
+        // Update user state in redux
+        let updatedSavedJobs;
+        if (res.data.isSaved) {
+            updatedSavedJobs = [...(user.savedJobs || []), id];
+        } else {
+            updatedSavedJobs = (user.savedJobs || []).filter(job => (job._id || job) !== id);
+        }
+        dispatch(setUser({ ...user, savedJobs: updatedSavedJobs }));
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  }
 
   const applyJobHandler = async () => {
     if (!user) {
@@ -101,8 +130,11 @@ const JobDetails = () => {
             >
               <Share2 className="w-5 h-5" />
             </button>
-            <button className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
-              <Bookmark className="w-5 h-5" />
+            <button 
+              onClick={saveJobHandler}
+              className={`p-2 hover:bg-slate-100 rounded-full transition-colors ${isSaved ? 'text-indigo-600 bg-indigo-50' : 'text-slate-600'}`}
+            >
+              <Bookmark className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
             </button>
           </div>
         </div>

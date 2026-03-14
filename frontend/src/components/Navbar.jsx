@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, User, Briefcase, Settings, LogOut, X } from 'lucide-react';
+import { Search, User, Briefcase, Settings, LogOut, X, Bookmark } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
@@ -137,6 +137,10 @@ const Navbar = () => {
                         
                         <button onClick={() => { setIsOpen(false); navigate('/profile'); }} className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2 font-medium">
                           <User className="w-4 h-4" /> My Profile
+                        </button>
+
+                        <button onClick={() => { setIsOpen(false); navigate('/saved-jobs'); }} className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2">
+                          <Bookmark className="w-4 h-4" /> Saved Jobs
                         </button>
                         
                         <button onClick={() => { setIsOpen(false); navigate('/my-applied-jobs'); }} className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 gap-2">

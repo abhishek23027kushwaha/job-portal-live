@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["student","recruiter"],
+      enum: ["student", "recruiter", "user"],
       default: "student",
     },
     resume: {
@@ -54,7 +54,13 @@ const userSchema = new mongoose.Schema(
     },
     resetOtpExpires: {
         type: Date,
-    }
+    },
+    savedJobs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Job',
+        }
+    ]
   },
   { timestamps: true }
 );

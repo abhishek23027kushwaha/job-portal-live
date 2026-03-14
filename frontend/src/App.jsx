@@ -10,6 +10,7 @@ import JobDetails from './pages/JobDetails'
 import EditProfile from './pages/EditProfile'
 import Profile from './pages/Profile'
 import MyAppliedJobs from './pages/MyAppliedJobs'
+import SavedJobs from './pages/SavedJobs'
 import AboutUs from './pages/AboutUs'
 import Footer from './components/Footer'
 import { Toaster } from 'react-hot-toast'
@@ -79,6 +80,7 @@ const App = () => {
               <Route path='/description/:id' element={<JobDetails/>} />
               <Route path='/profile/edit' element={<AuthenticatedRoute><EditProfile/></AuthenticatedRoute>} />
               <Route path='/profile' element={<AuthenticatedRoute><Profile/></AuthenticatedRoute>} />
+              <Route path='/saved-jobs' element={<AuthenticatedRoute><SavedJobs/></AuthenticatedRoute>} />
               <Route path='/my-applied-jobs' element={<AuthenticatedRoute><MyAppliedJobs/></AuthenticatedRoute>} />
               <Route path='/signup' element={<PublicRoute><Signup/></PublicRoute>} />
               <Route path='/login' element={<PublicRoute><Login/></PublicRoute>} />

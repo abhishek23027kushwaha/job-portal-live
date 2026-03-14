@@ -1,7 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import { API_URL } from '../App';
 import { 
   User, Mail, Phone, Briefcase, Linkedin, Github, 
-  Globe, MessageSquare, PenSquare
+  Globe, MessageSquare, PenSquare, Bookmark, MapPin, Building2, IndianRupee, ArrowRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
