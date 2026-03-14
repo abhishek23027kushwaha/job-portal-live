@@ -17,6 +17,7 @@ import axios from 'axios';
 import { API_URL } from '../App';
 import useGetSingleJob from '../hooks/useGetSingleJob';
 import { setSingleJob } from '../redux/jobSlice';
+import { setUser } from '../redux/userSlice';
 import SkeletonJobDetails from '../components/SkeletonJobDetails';
 import ShareModal from '../components/ShareModal';
 
